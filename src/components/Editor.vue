@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { useStorage } from "@vueuse/core";
+import { ref, onMounted, watch, computed } from "vue";
+import { useElementSize, useStorage } from "@vueuse/core";
 import { createGenerator } from "unocss";
 import { Pane, Splitpanes } from "splitpanes";
 import presetUno from "@unocss/preset-uno";
@@ -13,9 +13,14 @@ import CopyButton from "./CopyButton.vue";
 
 const loading = ref(true);
 const panel = ref(null);
+const title = ref(null);
+
+const { height: v } = useElementSize(title, undefined, { box: "border-box" });
+
+const height = computed(() => `${v.value}px`);
 
 const panelSizes = useStorage(
-  "nested-css-to-flat-panel-sizes",
+  "undo-tailwind-panel-sizes",
   [33.33, 33.33, 33.33],
   localStorage,
   {
@@ -109,11 +114,11 @@ onMounted(() => {
 
 <template>
   <Splitpanes ref="panel" :class="{ loading }" @resize="handleResize">
-    <Pane :min="0" :max="100" :size="panelSizes[0]">
-      <h2 class="title">Tailwind</h2>
+    <Pane :min-size="10" :size="panelSizes[0]">
+      <h2 ref="title" class="title">Tailwind</h2>
       <CodeMirror v-model="input" mode="css" class="scrolls" />
     </Pane>
-    <Pane :min="0" :max="100" :size="panelSizes[1]">
+    <Pane :min-size="10" :size="panelSizes[1]">
       <div
         :style="{
           display: 'flex',
@@ -133,7 +138,7 @@ onMounted(() => {
         :read-only="true"
       />
     </Pane>
-    <Pane :min="0" :max="100" :size="panelSizes[1]">
+    <Pane :min-size="10" :size="panelSizes[2]">
       <div
         :style="{
           display: 'flex',
@@ -158,8 +163,9 @@ onMounted(() => {
 
 <style>
 .splitpanes {
+  --height: v-bind(height);
   display: flex;
-  height: 100%;
+  height: calc(100% - var(--height));
 }
 .splitpanes.loading .splitpanes__pane {
   transition: none !important;
@@ -179,10 +185,25 @@ onMounted(() => {
 }
 .splitpanes__splitter {
   width: 5px;
+  height: 100vh;
   background: #444;
+  cursor: col-resize;
 }
 .scrolls {
   height: 100%;
   overflow: auto;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #222;
+}
+::-webkit-scrollbar-thumb {
+  background: #444;
+}
+:hover::-webkit-scrollbar-thumb {
+  background: #666;
 }
 </style>
