@@ -26,9 +26,36 @@ const input = ref("");
 const output = ref("");
 const formatted = ref("");
 
-const nomalizeOutput = (value) => {
-  // remove /* layer: default */
-  return value.replace(/\/\* layer: default \*\//g, "");
+const getVariables = (cssText, preflight) => {
+  const regex = /var\((--tw-[\w-]+)\)/g;
+  const matches = cssText.matchAll(regex);
+  return [...matches].reduce((acc, curr) => {
+    const [_, variable] = curr;
+    const regex = new RegExp(
+      `${variable.replace("--tw", "--un")}:([^;]+);`,
+      "g"
+    );
+    const match = preflight.match(regex);
+    if (match) {
+      return acc + match[0].replace("--un", "--tw");
+    }
+    return acc;
+  }, "");
+};
+
+const nomalizeOutput = (cssText, preflight) => {
+  cssText = cssText.replace(/\/\* layer: preflights \*\//g, "");
+
+  const vairables = getVariables(cssText, preflight);
+
+  cssText = cssText.replace(
+    preflight,
+    vairables ? `*,::before,::after{${vairables}}` : ""
+  );
+
+  const value = cssText.replace(/\/\* layer: default \*\//g, "");
+
+  return value;
 };
 
 const getCSSValue = (cssText) => {
@@ -54,11 +81,17 @@ const handleResize = (event) => {
 };
 
 watch(input, async (value) => {
-  const uno = createGenerator({
-    presets: [presetUno({ variablePrefix: "tw-" })],
+  const preset = presetUno({ variablePrefix: "tw-" });
+
+  const preflight = preset.preflights[0].getCSS(preset);
+
+  const generator = createGenerator({
+    presets: [preset],
   });
-  const { css } = await uno.generate(value, { preflights: false });
-  const nomalized = nomalizeOutput(css);
+
+  const { css } = await generator.generate(value);
+
+  const nomalized = nomalizeOutput(css, preflight);
   const prettyClasses = useCSSPrettify(nomalized);
   const prettyValues = useCSSPrettify(getCSSValue(nomalized));
 
