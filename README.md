@@ -1,7 +1,5 @@
-# Vue 3 + Vite
+# Undo Tailwind
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Tailwind CSS Class Conversion
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+![screely-1673749762048](https://user-images.githubusercontent.com/63687573/212519931-6a6dfeab-713f-40ee-9674-9cda20273171.png)
