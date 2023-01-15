@@ -33,26 +33,19 @@ const nomalizeOutput = (value) => {
 
 const getCSSValue = (cssText) => {
   const parsed = parse(cssText);
+  const parseDeclaration = (acc, { property, value }) => {
+    return acc + `${property}: ${value};`;
+  };
   return parsed.stylesheet.rules?.reduce((acc, curr) => {
     if (curr.type === "media") {
       return (
         acc +
         `@media ${curr.media} { ${curr.rules.reduce((acc, curr) => {
-          return (
-            acc +
-              curr.declarations?.reduce((acc, { property, value }) => {
-                return acc + `${property}: ${value};` || "";
-              }, "") || ""
-          );
+          return acc + curr.declarations?.reduce(parseDeclaration, "") || "";
         }, "")} }`
       );
     }
-    return (
-      acc +
-        curr.declarations?.reduce((acc, { property, value }) => {
-          return acc + `${property}: ${value};`;
-        }, "") || ""
-    );
+    return acc + curr.declarations?.reduce(parseDeclaration, "") || "";
   }, "");
 };
 
