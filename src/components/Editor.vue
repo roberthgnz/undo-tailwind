@@ -4,7 +4,7 @@ import { useStorage } from "@vueuse/core";
 import { createGenerator } from "unocss";
 import { Pane, Splitpanes } from "splitpanes";
 import presetUno from "@unocss/preset-uno";
-import css from "css";
+import { parse } from "../utils/css.js";
 
 import { useCSSPrettify } from "../composables/useCSSPrettify";
 
@@ -32,7 +32,7 @@ const nomalizeOutput = (value) => {
 };
 
 const getCSSValue = (cssText) => {
-  const parsed = css.parse(cssText);
+  const parsed = parse(cssText);
   return parsed.stylesheet.rules?.reduce((acc, curr) => {
     if (curr.type === "media") {
       return (
