@@ -9,6 +9,7 @@ import { parse } from "../utils/css.js";
 import { useCSSPrettify } from "../composables/useCSSPrettify";
 
 import CodeMirror from "./CodeMirror.vue";
+import CopyButton from "./CopyButton.vue";
 
 const loading = ref(true);
 const panel = ref(null);
@@ -117,11 +118,13 @@ onMounted(() => {
         :style="{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           color: '#9ca3afcc',
           backgroundColor: '#222',
         }"
       >
         <h2 class="title">Class</h2>
+        <CopyButton v-if="output" title="Copy Declarations" :value="output" />
       </div>
       <CodeMirror
         v-model="output"
@@ -135,11 +138,13 @@ onMounted(() => {
         :style="{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           color: '#9ca3afcc',
           backgroundColor: '#222',
         }"
       >
         <h2 class="title">Output</h2>
+        <CopyButton v-if="formatted" title="Copy Output" :value="formatted" />
       </div>
       <CodeMirror
         v-model="formatted"
