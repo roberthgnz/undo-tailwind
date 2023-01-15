@@ -16,7 +16,6 @@ export function useCodeMirror(textarea, input, options = {}) {
       skip = false;
       return;
     }
-    console.log("change", cm.getValue());
     input.value = cm.getValue();
   });
 
