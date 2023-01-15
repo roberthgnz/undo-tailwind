@@ -13,7 +13,6 @@ export default defineConfig({
     ],
   },
   build: {
-    emptyOutDir: true,
     rollupOptions: {
       external: [
         "@iconify/utils/lib/loader/fs",
