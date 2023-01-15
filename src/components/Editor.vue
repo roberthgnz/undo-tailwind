@@ -22,7 +22,7 @@ const panelSizes = useStorage(
   }
 );
 
-const input = ref("w-full h-full");
+const input = ref("");
 const output = ref("");
 const formatted = ref("");
 
