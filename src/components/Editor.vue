@@ -115,7 +115,7 @@ onMounted(() => {
 <template>
   <Splitpanes ref="panel" :class="{ loading }" @resize="handleResize">
     <Pane :min-size="10" :size="panelSizes[0]">
-      <h2 ref="title" class="title">Tailwind</h2>
+      <h2 ref="title" class="title">Tailwind To CSS</h2>
       <CodeMirror v-model="input" mode="css" class="scrolls" />
     </Pane>
     <Pane :min-size="10" :size="panelSizes[1]">
