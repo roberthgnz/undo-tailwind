@@ -1,5 +1,10 @@
 <script setup>
+import { onMounted } from "vue";
+import { inject } from "@vercel/analytics";
+
 import Editor from "./components/Editor.vue";
+
+onMounted(inject);
 </script>
 
 <template>

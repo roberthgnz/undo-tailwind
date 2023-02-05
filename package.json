@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@unocss/preset-uno": "^0.48.4",
+    "@vercel/analytics": "^0.1.8",
     "@vueuse/core": "^9.10.0",
     "codemirror": "5.65.2",
     "css": "^3.0.0",
